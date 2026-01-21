@@ -20,8 +20,8 @@ const bodyFont = Inter({
 });
 
 // --- LINKS ---
-const VAPI_DEMO_URL = "https://vapi.ai/demo";
-const CONTACT_EMAIL = "hello@amintelligence.com"; 
+const VAPI_DEMO_URL = "https://vapi.ai?demo=true&shareKey=c76af048-498a-4427-aa34-b8662ada6920&assistantId=335807b7-7f0e-44c7-9842-58a7d1701950";
+const CONTACT_EMAIL = "foundersamintelligence.ai@gmail.com"; 
 
 // --- TYPES ---
 interface GlassCardProps {
