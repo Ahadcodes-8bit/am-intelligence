@@ -1,9 +1,9 @@
-'use client';
+'use client'; 
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion'; 
 import { Calendar, Phone, MapPin, Clock, CheckCircle, Star, ArrowRight, Shield, Activity, User, Mail, MessageSquare } from 'lucide-react';
-import { Manrope, Inter } from 'next/font/google';
+import { Manrope, Inter } from 'next/font/google'; 
 
 // --- FONTS ---
 const headingFont = Manrope({ 
@@ -20,9 +20,8 @@ const bodyFont = Inter({
 
 // --- CONFIGURATION ---
 // PASTE YOUR N8N WEBHOOK URL INSIDE THE QUOTES BELOW vvv
-const N8N_WEBHOOK_URL = "";
-const WEBHOOK_SECRET = "apex-dental-2026"; 
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+const N8N_WEBHOOK_URL = ""; 
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 // =========================================
 // 1. COMPONENTS
@@ -34,18 +33,12 @@ function BookingForm() {
     email: '',
     phone: '',
     service: 'General Checkup',
-    urgency: 'Routine',
     notes: ''
   });
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
-  const [consent, setConsent] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!consent) {
-      alert("You must give consent to receive appointment notifications.");
-      return;
-    }
     setStatus('submitting');
 
     try {
@@ -57,16 +50,8 @@ function BookingForm() {
         // Send data to n8n
         await fetch(N8N_WEBHOOK_URL, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-clinic-secret': WEBHOOK_SECRET
-          },
-          body: JSON.stringify({
-            clinic: "Apex Dental",
-            source: "Website Form",
-            submittedAt: new Date().toISOString(),
-            patient: formData
-          }),
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
         });
       }
       setStatus('success');
@@ -87,9 +72,7 @@ function BookingForm() {
           <CheckCircle size={32} />
         </div>
         <h3 className={`text-2xl ${headingFont.className} font-bold text-green-800 mb-2`}>Request Received!</h3>
-        <p className="text-green-700">
-          Our staff will contact you shortly to confirm your appointment.
-        </p>
+        <p className="text-green-700">Our team (or AI agent) will contact you shortly to confirm.</p>
         <button 
           onClick={() => setStatus('idle')}
           className="mt-6 text-sm font-bold uppercase tracking-widest text-green-600 hover:text-green-800"
@@ -106,12 +89,11 @@ function BookingForm() {
       
       <div className="mb-8">
         <h3 className={`text-3xl ${headingFont.className} font-bold text-slate-900`}>Book Appointment</h3>
-        <p className="text-slate-500 mt-2">
-          Fill out the form below and our team will contact you shortly to confirm your visit.
-        </p>
+        <p className="text-slate-500 mt-2">Fill out the form below. Our AI system processes this instantly.</p>
       </div>
 
       <div className="space-y-5">
+        
         {/* Name */}
         <div>
           <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Full Name</label>
@@ -160,7 +142,7 @@ function BookingForm() {
           </div>
         </div>
 
-        {/* Service */}
+        {/* Service Type */}
         <div>
           <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Reason for Visit</label>
           <div className="relative">
@@ -179,19 +161,6 @@ function BookingForm() {
           </div>
         </div>
 
-        {/* Urgency */}
-        <div>
-          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Is this urgent?</label>
-          <select
-            value={formData.urgency}
-            onChange={(e) => setFormData({...formData, urgency: e.target.value})}
-            className="w-full pl-4 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl"
-          >
-            <option>Routine</option>
-            <option>Urgent (Pain / Emergency)</option>
-          </select>
-        </div>
-
         {/* Notes */}
         <div>
           <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Additional Notes</label>
@@ -207,19 +176,6 @@ function BookingForm() {
           </div>
         </div>
 
-        {/* Consent */}
-        <div className="flex items-start gap-3 text-xs text-slate-500">
-          <input
-            required
-            type="checkbox"
-            checked={consent}
-            onChange={() => setConsent(!consent)}
-            className="mt-1"
-          />
-          <p>I consent to receive calls or SMS messages regarding my appointment.</p>
-        </div>
-
-        {/* Submit */}
         <button 
           disabled={status === 'submitting'}
           type="submit" 
@@ -233,13 +189,163 @@ function BookingForm() {
             </>
           )}
         </button>
+
       </div>
     </form>
-  );
+  )
 }
 
-// --- Other components remain unchanged ---
-// ClinicHero, ServiceCard, ServicesSection, InfoBar
-// just import/use BookingForm from above
+function ClinicHero() {
+  return (
+    <div className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-slate-50">
+      <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+        
+        {/* Text Content */}
+        <div className="relative z-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-bold uppercase tracking-widest mb-6">
+            <Star size={12} fill="currentColor" /> Voted Best in City 2025
+          </div>
+          
+          <h1 className={`text-5xl md:text-7xl ${headingFont.className} font-bold text-slate-900 leading-[1.05] tracking-tight mb-6`}>
+            Modern Dentistry, <br/>
+            <span className="text-blue-600">Gentle Care.</span>
+          </h1>
+          
+          <p className="text-xl text-slate-500 leading-relaxed mb-8 max-w-lg">
+            Experience painless treatments and a smile you'll love. We use the latest technology to ensure your visit is quick, comfortable, and effective.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-6 text-sm font-medium text-slate-600 mb-10">
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                <Shield size={20} />
+              </div>
+              <span>Insurance Accepted</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                <Clock size={20} />
+              </div>
+              <span>Open Saturdays</span>
+            </div>
+          </div>
 
-export default BookingForm;
+          <div className="flex items-center gap-2 text-slate-400 text-sm">
+            <div className="flex -space-x-2">
+               {[1,2,3,4].map(i => (
+                 <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-slate-300"></div>
+               ))}
+            </div>
+            <span>Trusted by 2,000+ patients</span>
+          </div>
+        </div>
+
+        {/* The Booking Form (Right Side) */}
+        <div className="relative z-10">
+           <BookingForm />
+        </div>
+
+      </div>
+
+      {/* Decorative Background */}
+      <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-50/50 rounded-bl-[100px] -z-0 hidden lg:block"></div>
+      <div className="absolute top-1/2 left-0 -translate-y-1/2 w-64 h-64 bg-blue-200/20 rounded-full blur-[80px]"></div>
+    </div>
+  )
+}
+
+function ServiceCard({ title, desc, icon: Icon }: { title: string, desc: string, icon: any }) {
+  return (
+    <div className="p-8 rounded-2xl bg-white border border-slate-100 hover:shadow-xl transition-all hover:-translate-y-1 group">
+      <div className="w-14 h-14 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+        <Icon size={28} strokeWidth={1.5} />
+      </div>
+      <h3 className={`text-xl ${headingFont.className} font-bold text-slate-900 mb-3`}>{title}</h3>
+      <p className="text-slate-500 leading-relaxed">{desc}</p>
+    </div>
+  )
+}
+
+function ServicesSection() {
+  return (
+    <section className="py-24 px-6 bg-white">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <span className="text-blue-600 text-xs font-bold uppercase tracking-widest">Our Services</span>
+          <h2 className={`text-4xl ${headingFont.className} font-bold text-slate-900 mt-3`}>Complete Dental Care</h2>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          <ServiceCard 
+            icon={Activity}
+            title="General Dentistry"
+            desc="Regular checkups, cleanings, and exams to keep your teeth healthy and prevent future issues."
+          />
+          <ServiceCard 
+            icon={Star}
+            title="Cosmetic"
+            desc="Whitening, veneers, and bonding to give you the bright, confident smile you deserve."
+          />
+          <ServiceCard 
+            icon={Shield}
+            title="Restorative"
+            desc="Implants, crowns, and bridges using durable materials that look and feel natural."
+          />
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function InfoBar() {
+  return (
+    <div className="bg-[#1e293b] text-white py-4 px-6 text-sm">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="flex items-center gap-6">
+          <span className="flex items-center gap-2"><Phone size={14} className="text-blue-400"/> (555) 012-3456</span>
+          <span className="hidden md:flex items-center gap-2"><MapPin size={14} className="text-blue-400"/> 123 Dental Street, NY</span>
+        </div>
+        <div className="flex items-center gap-4 text-slate-400 text-xs">
+          <span>Mon-Fri: 9am - 6pm</span>
+          <span>Sat: 10am - 2pm</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// =========================================
+// 2. MAIN PAGE
+// =========================================
+
+export default function Home() {
+  return (
+    <div className={`min-h-screen ${bodyFont.className} bg-white text-slate-900 selection:bg-blue-100`}>
+      <InfoBar />
+      
+      {/* Navigation */}
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+          <div className={`text-2xl font-bold tracking-tight ${headingFont.className} text-blue-900 flex items-center gap-2`}>
+            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
+              <Activity size={18} />
+            </div>
+            ApexDental
+          </div>
+          <button className="bg-blue-600 text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-blue-700 transition-colors">
+            Patient Portal
+          </button>
+        </div>
+      </nav>
+
+      <ClinicHero />
+      <ServicesSection />
+      
+      {/* Footer */}
+      <footer className="bg-slate-50 border-t border-slate-200 py-12 text-center text-slate-400 text-sm">
+        <p>© 2026 Apex Dental Care. This is a demo site for AM Intelligence.</p>
+      </footer>
+
+    </div>
+  );
+}
