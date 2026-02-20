@@ -1,12 +1,12 @@
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
 
-export const runtime = "nodejs"; // IMPORTANT for nodemailer on Vercel
-
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { name, email, phone, service, notes } = body;
+    const { name, email, phone, service, notes } = await req.json();
 
     if (!process.env.GMAIL_APP_PASSWORD) {
       throw new Error("Missing GMAIL_APP_PASSWORD");
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     });
 
     await transporter.sendMail({
-      from: `"Apex Dental Form" <ahadsyed193@gmail.com>`,
+      from: `"Apex Dental Booking" <ahadsyed193@gmail.com>`,
       to: "ahadsyed193@gmail.com",
       subject: "New Appointment Booking",
       html: `
@@ -35,7 +35,6 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ success: true });
-
   } catch (error: any) {
     console.error("EMAIL ERROR:", error);
     return NextResponse.json(

@@ -48,7 +48,7 @@ function BookingForm() {
         console.log("Form Data (Connect n8n to send real data):", formData);
       } else {
         // Send data to n8n
-        await fetch("/api/send-email", {
+       await fetch("/api/send", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify(formData),
