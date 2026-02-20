@@ -48,11 +48,11 @@ function BookingForm() {
         console.log("Form Data (Connect n8n to send real data):", formData);
       } else {
         // Send data to n8n
-        await fetch(N8N_WEBHOOK_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
-        });
+        await fetch("/api/send-email", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(formData),
+});
       }
       setStatus('success');
     } catch (error) {
