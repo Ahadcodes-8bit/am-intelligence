@@ -1,6 +1,7 @@
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+// @ts-ignore
 import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
 
